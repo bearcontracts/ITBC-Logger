@@ -1,7 +1,5 @@
 package com.example.finalProjectFinal.Model.Requests;
 
-import com.example.finalProjectFinal.Model.Log.Log;
-import com.example.finalProjectFinal.Model.Log.logType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -14,10 +14,7 @@ public class tokenInitializer implements tokenMethods{
         return "Token generated";
     }
 
-    @Override
-    public boolean containsAcc(String account) {
-        return false;
-    }
+
 
     @Override
     public UUID findToken(String username) {
@@ -32,10 +29,20 @@ public class tokenInitializer implements tokenMethods{
         return token;
     }
 
+
+
     @Override
     public boolean isAdmin(UUID id) {
+        for (HashMap.Entry<UUID, String> pair : tokenData.entrySet()){
+            if(pair.getValue().equals("admin")){
+                if(pair.getKey().equals(id)){
+                    return true;
+                }
+            }
+        }
         return false;
-    }
+}
+
 
     @Override
     public boolean isTokenValid(UUID id) {
