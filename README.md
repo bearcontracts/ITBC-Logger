@@ -81,38 +81,6 @@ Incorrect token
 Message should be less than 1024
 IT Bootcamp 10/20/2022
 
-
-
-4. Search logs
-HTTP Method: GET
-Endpoint URL: /api/logs/search
-Request params:
-dateFrom - date
-dateTo - date
-message - string
-logType - int
-Request headers:
-Authorization - token
-Responses:
-200 - OK
-
-
-[
-{
-"message": "string",
-"logType": 0,
-"createdDate": "date"
-}
-]
-
-400 - Bad request
-Invalid dates
-Invalid logType
-401 - Unauthorized
-Incorrect token
-IT Bootcamp 10/20/2022
-
-
 Admin
 
 1. Get all clients
