@@ -76,7 +76,7 @@ public class ClientController {
 
     }
     @PatchMapping("/api/clients/{clientId}/reset-password")
-    public ResponseEntity<String> changeClientpassword(@RequestBody Client client, @RequestParam(name = "clientId") UUID id, @RequestHeader UUID token){
+    public ResponseEntity<String> changeClientPassword(@RequestBody Client client, @RequestParam(name = "clientId") UUID id, @RequestHeader UUID token, @PathVariable String clientId){
         if(!(tokenInitializer.isTokenValid(token))){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not admin! You cannot change password");
 
