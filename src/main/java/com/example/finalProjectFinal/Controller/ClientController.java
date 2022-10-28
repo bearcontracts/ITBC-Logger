@@ -23,27 +23,6 @@ public class ClientController {
     private ClientRepository clientRepository;
     private com.example.finalProjectFinal.Token.tokenInitializer tokenInitializer;
 
-    @GetMapping(path = "/api/clients")
-    public ResponseEntity<List> getAllClients(@RequestHeader UUID  token) {
-
-        if (tokenInitializer.isTokenValid(token)) {
-            if (!(tokenInitializer.isAdmin(token))) {
-
-
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-            }
-
-        }
-
-
-        return ResponseEntity.status(HttpStatus.CONTINUE).body(clientDetailsService.getClients());
-
-
-    }
-
-
-
-
     @PostMapping(path = "/api/clients/register")
     public ResponseEntity<String> registerClient(@RequestBody RegistrationRequest registrationRequest){
         if(clientRepository.existsByEmail(registrationRequest.getEmail())){
@@ -79,6 +58,40 @@ public class ClientController {
         else return new ResponseEntity<String>(HttpStatus.CONFLICT);
     }
 
+    @GetMapping(path = "/api/clients")
+    public ResponseEntity<List> getAllClients(@RequestHeader UUID  token) {
 
-}
+        if (tokenInitializer.isTokenValid(token)) {
+            if (!(tokenInitializer.isAdmin(token))) {
+
+
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+
+        }
+
+
+        return ResponseEntity.status(HttpStatus.CONTINUE).body(clientDetailsService.getClients());
+
+
+    }
+    @PatchMapping("/api/clients/{clientId}/reset-password")
+    public ResponseEntity<String> changeClientpassword(@RequestBody Client client, @RequestParam(name = "clientId") UUID id, @RequestHeader UUID token){
+        if(!(tokenInitializer.isTokenValid(token))){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not admin! You cannot change password");
+
+        }
+        if(clientRepository.findById(client.getId()).isPresent()){
+            clientDetailsService.changePassword(id,encoder.encode(client.getPassword()));
+
+        }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("You have successfully changed your password");
+    }
+
+    }
+
+
+
+
+
 
