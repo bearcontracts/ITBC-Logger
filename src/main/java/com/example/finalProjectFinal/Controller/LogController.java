@@ -3,7 +3,6 @@ package com.example.finalProjectFinal.Controller;
 import com.example.finalProjectFinal.Model.Log.Log;
 import com.example.finalProjectFinal.Model.Requests.LogRequest;
 import com.example.finalProjectFinal.Repository.LogRepository;
-import com.example.finalProjectFinal.Services.LogService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +17,19 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 public class LogController {
-    private LogService logService;
     private com.example.finalProjectFinal.Token.tokenInitializer tokenInitializer;
     private LogRepository logRepository;
+
     @PostMapping(path = "api/logs/create")
-    public ResponseEntity<String> createLog(@RequestHeader UUID token, @RequestBody LogRequest logRequest){
-        if(!(tokenInitializer.isTokenValid(token))) {
+    public ResponseEntity<String> createLog(@RequestHeader UUID token, @RequestBody LogRequest logRequest) {
+        Log log = new Log();
+        if (!(tokenInitializer.isTokenValid(token))) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Token is invalid");
         }
 
-        Log log = new Log();
+        if(logRequest.getMessage().length()>1024){
+            return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("Your message is too large");
+        }
         log.setId(UUID.randomUUID());
         log.setMessage(logRequest.getMessage());
         log.setLocalDate(LocalDate.now());
